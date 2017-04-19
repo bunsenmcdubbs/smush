@@ -7,6 +7,8 @@ import numpy as np
 from scipy import misc
 from scipy.cluster.vq import kmeans, vq
 from time import time
+import subprocess
+import sys
 
 # param in_file - name of the input file
 # param k - number of clusters
@@ -65,8 +67,10 @@ if __name__=='__main__':
     parser.add_argument('k', help='number of clusters', type=int)
     args = parser.parse_args()
 
-    scipy_time = scipy_kmeans(args.in_file, args.k)
-    diy_time = diy_kmeans(args.in_file, args.k)
+    print subprocess.check_output(["Rscript", sys.argv[0][-3], args.in_file, str(args.k)], stderr=subprocess.STDOUT)
 
+    scipy_time = scipy_kmeans(args.in_file, args.k)
     print 'Time (scipy): %f'%scipy_time
+
+    diy_time = diy_kmeans(args.in_file, args.k)
     print 'Time (diy): %f'%diy_time
